@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+    symfony:
+        container_name: conjure_symfony
+        build:
+            dockerfile: ./docker/symfony/Dockerfile
+        image: conjure_symfony
+        volumes:
+            - ./src/symfony:/root/symfony
+        ports:
+            - 8000:8000
+            - 443:443
+        env_file:
+            - ./docker/symfony/.env
+    angular:
+        container_name: conjure_angular
+        build:
+            dockerfile: ./docker/angular/Dockerfile
+        image: conjure_angular
+        volumes:
+            - ./src/angular:/root/angular
+        ports:
+            - 4200:4200
+            - 49153:49153
+        env_file:
+            - ./docker/angular/.env
+    mariadb:
+        container_name: conjure_mariadb
+        build:
+            dockerfile: ./docker/mariadb/Dockerfile
+        image: conjure_mariadb
+        volumes:
+            - ./data/mariadb:/var/lib/mysql
+        ports:
+            - 3306:3306
+        env_file:
+            - ./docker/mariadb/.env
