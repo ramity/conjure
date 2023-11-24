@@ -1,11 +1,21 @@
+#!/bin/bash
+
+DIR=/root/symfony
+
+# Globally cd to correct directory
+cd $DIR || exit
+
 # Nuke existing files and directories
-rm ./* -r -d
+rm ${DIR:?}/* -r -d
 
 # Nuke existing hidden files
-rm ./.*
+rm $DIR/.*
 
 # Create symfony project
-symfony new conjure --webapp --dir=.
+symfony new conjure --webapp --dir=$DIR
+
+# Recreate .gitkeep file
+touch $DIR/.gitkeep
 
 # Remove initialized git dir
-rm .git -r -d
+rm $DIR/.git -r -d
