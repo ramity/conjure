@@ -1,4 +1,15 @@
+# Secrets
 .env
+
+# IDE
 .idea
+
+# Hide database volume
 data/mariadb/*
+
+# Don't volume src directories
+src/angular/*
+src/symfony/*
+
+# Git related
 !.gitkeep
