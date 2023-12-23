@@ -12,14 +12,14 @@ rm ${DIR:?}/* -r -d
 rm $DIR/.*
 
 # Create symfony project
-symfony new conjure --webapp --dir=$DIR --no-git
+symfony new conjure --webapp --dir=$DIR
 
 # Cleanup post generation
 touch $DIR/.gitkeep
-# rm $DIR/.git -r -d
+rm $DIR/.git -r -d
 
 # Add deps
-composer require ramity/symfony-conjure=dev-master
+composer require ramity/conjure-commands=dev-master
 
 # Drop database if exists and create fresh
 bin/console d:d:d --if-exists --force
