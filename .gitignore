@@ -7,7 +7,7 @@
 # Hide database volume
 data/mariadb/*
 
-# Don't volume src directories
+# Don't volume contents of generated src directories
 src/angular/*
 src/symfony/*
 

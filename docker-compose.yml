@@ -6,6 +6,7 @@ services:
             dockerfile: ./docker/symfony/Dockerfile
         image: conjure_symfony
         volumes:
+            - ./src/console:/root/console
             - ./src/symfony:/root/symfony
             - ./scripts:/root/scripts
         ports:
