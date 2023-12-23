@@ -18,6 +18,9 @@ symfony new conjure --webapp --dir=$DIR --no-git
 touch $DIR/.gitkeep
 # rm $DIR/.git -r -d
 
+# Add deps
+composer require ramity/symfony-conjure=dev-master
+
 # Drop database if exists and create fresh
 bin/console d:d:d --if-exists --force
 bin/console d:d:c
