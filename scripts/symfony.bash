@@ -18,148 +18,164 @@ symfony new conjure --webapp --dir=$DIR
 touch $DIR/.gitkeep
 rm $DIR/.git -r -d
 
-# Add deps
-composer require ramity/conjure-commands=dev-master
+# Add conjure commands repo
+composer config repositories.ramity/conjure-commands path /root/conjure-commands
+composer require --dev ramity/conjure-commands:dev-main@dev
+
+# Replace remote with local maker-bundle repo
+composer config repositories.symfony/maker-bundle path /root/maker-bundle
+composer require --dev symfony/maker-bundle:dev-main@dev
+
+# Update deps
+composer update
 
 # Drop database if exists and create fresh
 bin/console d:d:d --if-exists --force
 bin/console d:d:c
 
 # User entity
-echo -e "yes\nuuid\nyes\n" | bin/console make:user User
+bin/console conjure:wrapper make:user User yes uuid yes
 
 # Unit entity
-echo -e "name\nstring\n255\nno\n\n" | bin/console make:entity Unit
-echo -e "abbreviation\nstring\n255\nno\n\n" | bin/console make:entity Unit
+bin/console conjure:wrapper make:entity Unit no name string 255 no ""
+bin/console conjure:wrapper make:entity Unit abbreviation string 255 no ""
 
-# Nutrtition entity
-echo -e "servingSizeQuantity\nfloat\nno\n\n" | bin/console make:entity Nutrition
-echo -e "servingSizeUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "altServingSizeQuantity\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "altServingSizeUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "servingsPerContainer\nfloat\nno\n\n" | bin/console make:entity Nutrition
+# Nutrition entity
+bin/console conjure:wrapper make:entity Nutrition no ""
+bin/console conjure:wrapper make:entity Nutrition servingSizeQuantity float no ""
+bin/console conjure:wrapper make:entity Nutrition servingSizeUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition altServingSizeQuantity float yes ""
+bin/console conjure:wrapper make:entity Nutrition altServingSizeUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition servingsPerContainer float no ""
 # - Calories
-echo -e "calories\nfloat\nno\n\n" | bin/console make:entity Nutrition
-echo -e "caloriesFromFat\nfloat\nno\n\n" | bin/console make:entity Nutrition
+bin/console conjure:wrapper make:entity Nutrition calories float no ""
+bin/console conjure:wrapper make:entity Nutrition caloriesFromFat float no ""
 # - Fats
-echo -e "totalFat\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "totalFatUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "saturatedFat\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "saturatedFatUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "transFat\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "transFatUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "cholesterol\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "cholesterolUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
+bin/console conjure:wrapper make:entity Nutrition totalFat float yes ""
+bin/console conjure:wrapper make:entity Nutrition totalFatUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition saturatedFat float yes ""
+bin/console conjure:wrapper make:entity Nutrition saturatedFatUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition transFat float yes ""
+bin/console conjure:wrapper make:entity Nutrition transFatUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition cholesterol float yes ""
+bin/console conjure:wrapper make:entity Nutrition cholesterolUnit ManyToOne Unit yes no ""
 # - Carbs
-echo -e "totalCarbohydrates\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "totalCarbohydratesUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "dietaryFiber\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "dietaryFiberUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "totalSugars\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "totalSugarsUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "addedSugars\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "addedSugarsUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "otherCarbohydrates\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "otherCarbohydratesUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
+bin/console conjure:wrapper make:entity Nutrition totalCarbohydrates float yes ""
+bin/console conjure:wrapper make:entity Nutrition totalCarbohydratesUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition dietaryFiber float yes ""
+bin/console conjure:wrapper make:entity Nutrition dietaryFiberUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition totalSugars float yes ""
+bin/console conjure:wrapper make:entity Nutrition totalSugarsUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition addedSugars float yes ""
+bin/console conjure:wrapper make:entity Nutrition addedSugarsUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition otherCarbohydrates float yes ""
+bin/console conjure:wrapper make:entity Nutrition otherCarbohydratesUnit ManyToOne Unit yes no ""
 # - Protein
-echo -e "protein\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "proteinUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
+bin/console conjure:wrapper make:entity Nutrition protein float yes ""
+bin/console conjure:wrapper make:entity Nutrition proteinUnit ManyToOne Unit yes no ""
 # - Vitamins
-echo -e "vitaminA\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminAUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminC\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminCUnit\ManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminD\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminDUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminE\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminEUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminK\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "vitaminKUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
+bin/console conjure:wrapper make:entity Nutrition vitaminA float yes ""
+bin/console conjure:wrapper make:entity Nutrition vitaminAUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition vitaminC float yes ""
+bin/console conjure:wrapper make:entity Nutrition vitaminCUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition vitaminD float yes ""
+bin/console conjure:wrapper make:entity Nutrition vitaminDUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition vitaminE float yes ""
+bin/console conjure:wrapper make:entity Nutrition vitaminEUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition vitaminK float yes ""
+bin/console conjure:wrapper make:entity Nutrition vitaminKUnit ManyToOne Unit yes no ""
 # - Vitamin B variants
-echo -e "thiamine\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "thiamineUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "riboflavin\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "riboflavinUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "niacin\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "niacinUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "pantothenicAcid\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "pantothenicAcidUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "pyridoxine\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "pyridoxineUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "biotin\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "biotinUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "folate\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "folateUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "cobalamin\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "cobalaminUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
+bin/console conjure:wrapper make:entity Nutrition thiamine float yes ""
+bin/console conjure:wrapper make:entity Nutrition thiamineUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition riboflavin float yes ""
+bin/console conjure:wrapper make:entity Nutrition riboflavinUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition niacin float yes ""
+bin/console conjure:wrapper make:entity Nutrition niacinUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition pantothenicAcid float yes ""
+bin/console conjure:wrapper make:entity Nutrition pantothenicAcidUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition pyridoxine float yes ""
+bin/console conjure:wrapper make:entity Nutrition pyridoxineUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition biotin float yes ""
+bin/console conjure:wrapper make:entity Nutrition biotinUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition folate float yes ""
+bin/console conjure:wrapper make:entity Nutrition folateUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition cobalamin float yes ""
+bin/console conjure:wrapper make:entity Nutrition cobalaminUnit ManyToOne Unit yes no ""
 # - Elements
-echo -e "sodium\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "sodiumUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "calcium\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "calciumUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "iron\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "ironUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "phosphorus\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "phosphorusUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "potassium\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "potassiumUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "magnesium\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "magnesiumUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "copper\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "copperUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "manganese\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "manganeseUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "chromium\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "chromiumUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
-echo -e "selenium\nfloat\nyes\n\n" | bin/console make:entity Nutrition
-echo -e "seleniumUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity Nutrition
+bin/console conjure:wrapper make:entity Nutrition sodium float yes ""
+bin/console conjure:wrapper make:entity Nutrition sodiumUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition calcium float yes ""
+bin/console conjure:wrapper make:entity Nutrition calciumUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition iron float yes ""
+bin/console conjure:wrapper make:entity Nutrition ironUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition phosphorus float yes ""
+bin/console conjure:wrapper make:entity Nutrition phosphorusUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition potassium float yes ""
+bin/console conjure:wrapper make:entity Nutrition potassiumUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition magnesium float yes ""
+bin/console conjure:wrapper make:entity Nutrition magnesiumUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition copper float yes ""
+bin/console conjure:wrapper make:entity Nutrition copperUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition manganese float yes ""
+bin/console conjure:wrapper make:entity Nutrition manganeseUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition chromium float yes ""
+bin/console conjure:wrapper make:entity Nutrition chromiumUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity Nutrition selenium float yes ""
+bin/console conjure:wrapper make:entity Nutrition seleniumUnit ManyToOne Unit yes no ""
 
 # Ingredient entity
-echo -e "name\nstring\n255\nno\n\n" | bin/console make:entity Ingredient
-echo -e "brand\nstring\n255\nyes\n\n" | bin/console make:entity Ingredient
-echo -e "nutrition\nManyToOne\nNutrition\nyes\nno\n" | bin/console make:entity Ingredient
+bin/console conjure:wrapper make:entity Ingredient no ""
+bin/console conjure:wrapper make:entity Ingredient name string 255 no ""
+bin/console conjure:wrapper make:entity Ingredient brand string 255 yes ""
+bin/console conjure:wrapper make:entity Ingredient Nutrition ManyToOne Nutrition yes no ""
 
 # IngredientSubstitution entity
-echo -e "name\nstring\n255\nno\n\n" | bin/console make:entity IngredientSubstitution
-echo -e "predecessor\nManyToOne\nIngredient\nyes\nno\n\n" | bin/console make:entity IngredientSubstitution
-echo -e "predecessorQuantity\nfloat\nyes\n\n" | bin/console make:entity IngredientSubstitution
-echo -e "predecessorUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity IngredientSubstitution
-echo -e "replacement\nManyToOne\nIngredient\nyes\nno\n\n" | bin/console make:entity IngredientSubstitution
-echo -e "replacementQuantity\nfloat\nyes\n\n" | bin/console make:entity IngredientSubstitution
-echo -e "replacementUnit\nManyToOne\nUnit\nyes\nno\n\n" | bin/console make:entity IngredientSubstitution
+bin/console conjure:wrapper make:entity IngredientSubstitution no ""
+bin/console conjure:wrapper make:entity IngredientSubstitution name string 255 no ""
+bin/console conjure:wrapper make:entity IngredientSubstitution predecessor ManyToOne Ingredient yes no ""
+bin/console conjure:wrapper make:entity IngredientSubstitution predecessorQuantity float yes ""
+bin/console conjure:wrapper make:entity IngredientSubstitution predecessorUnit ManyToOne Unit yes no ""
+bin/console conjure:wrapper make:entity IngredientSubstitution replacement ManyToOne Ingredient yes no ""
+bin/console conjure:wrapper make:entity IngredientSubstitution replacementQuantity float yes ""
+bin/console conjure:wrapper make:entity IngredientSubstitution replacementUnit ManyToOne Unit yes no ""
 
 # Recipe entity
-echo -e "name\nstring\n255\nno\n\n" | bin/console make:entity Recipe
-echo -e "ingredients\nManyToMany\nIngredient\nno\n\n" | bin/console make:entity Recipe
-echo -e "possibleIngredientSubstitutions\nManyToMany\nIngredientSubstitution\nno\n\n" | bin/console make:entity Recipe
-echo -e "steps\ntext\nno\n\n" | bin/console make:entity Recipe
+bin/console conjure:wrapper make:entity Recipe no ""
+bin/console conjure:wrapper make:entity Recipe name string 255 no ""
+bin/console conjure:wrapper make:entity Recipe ingredients ManyToMany Ingredient no no ""
+bin/console conjure:wrapper make:entity Recipe possibleIngredientSubstitutions ManyToMany IngredientSubstitution no no ""
+bin/console conjure:wrapper make:entity Recipe steps text no ""
 
 # Meal entity
-echo -e "name\nstring\n255\nno\n\n" | bin/console make:entity Meal
-echo -e "brand\nstring\n255\nyes\n\n" | bin/console make:entity Meal
-echo -e "ingredients\nManyToMany\nIngredient\nno\n" | bin/console make:entity Meal
-echo -e "nutrition\nManyToOne\nNutrition\nyes\nno\n" | bin/console make:entity Meal
+bin/console conjure:wrapper make:entity Meal no ""
+bin/console conjure:wrapper make:entity Meal name string 255 no ""
+bin/console conjure:wrapper make:entity Meal brand string 255 yes ""
+bin/console conjure:wrapper make:entity Meal ingredients ManyToMany Ingredient no no ""
+bin/console conjure:wrapper make:entity Meal Nutrition ManyToOne Nutrition yes no ""
 
 # MealPlan entity
-echo -e "name\nstring\n255\nno\n\n" | bin/console make:entity MealPlan
-echo -e "meals\nManyToMany\nMeal\nno\n\n" | bin/console make:entity MealPlan
+bin/console conjure:wrapper make:entity MealPlan no ""
+bin/console conjure:wrapper make:entity MealPlan name string 255 no ""
+bin/console conjure:wrapper make:entity MealPlan meals ManyToMany Meal no no ""
 
 # MealInstance entity
-echo -e "meal\nManyToMany\nMeal\nno\n\n" | bin/console make:entity MealInstance
+bin/console conjure:wrapper make:entity MealInstance no ""
+bin/console conjure:wrapper make:entity MealInstance meal ManyToMany Meal no no ""
 
 # FridgeTransaction entity
-echo -e "ingredient\nManyToOne\nIngredient\nyes\nno\n\n" | bin/console make:entity FridgeTransaction
-echo -e "quantity\nfloat\nyes\n\n" | bin/console make:entity FridgeTransaction
-echo -e "createdAt\nManyToMany\nIngredient\nno\n\n" | bin/console make:entity FridgeTransaction
+bin/console conjure:wrapper make:entity FridgeTransaction no ""
+bin/console conjure:wrapper make:entity FridgeTransaction ingredient ManyToOne Ingredient yes no ""
+bin/console conjure:wrapper make:entity FridgeTransaction quantity float yes ""
+bin/console conjure:wrapper make:entity FridgeTransaction createdAt ManyToMany Ingredient no no ""
 
 # GroceryTrip entity
-echo -e "ingredients\nManyToMany\nIngredient\nno\n\n" | bin/console make:entity GroceryTrip
+bin/console conjure:wrapper make:entity GroceryTrip no ""
+bin/console conjure:wrapper make:entity GroceryTrip ingredients ManyToMany Ingredient no no ""
 
 # Fridge entity
-echo -e "ingredientInputs\nManyToMany\nFridgeTransaction\nno\n\n" | bin/console make:entity Fridge
-sed -i 's/private Collection $ingredientInputs;/#[ORM\\JoinTable(name: "fridgeIngredientInputs")]\n    &/g' ./src/Entity/Fridge.php
-echo -e "ingredientOutputs\nManyToMany\nFridgeTransaction\nno\n\n" | bin/console make:entity Fridge
-sed -i 's/private Collection $ingredientOutputs;/#[ORM\\JoinTable(name: "fridgeIngredientOutputs")]\n    &/g' ./src/Entity/Fridge.php
+bin/console conjure:wrapper make:entity Fridge no ""
+bin/console conjure:wrapper make:entity Fridge ingredientInputs ManyToMany FridgeTransaction no yes fridgeIngredientInputs ""
+bin/console conjure:wrapper make:entity Fridge ingredientOutputs ManyToMany FridgeTransaction no yes fridgeIngredientOutputs ""
 
 # Validate entity definitions
 bin/console d:s:v

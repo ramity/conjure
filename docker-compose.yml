@@ -6,9 +6,10 @@ services:
             dockerfile: ./docker/symfony/Dockerfile
         image: conjure_symfony
         volumes:
-            - ./src/console:/root/console
             - ./src/symfony:/root/symfony
             - ./scripts:/root/scripts
+            - ./src/conjure-commands:/root/conjure-commands
+            - ./src/maker-bundle:/root/maker-bundle
         ports:
             - 8000:8000
             - 443:443

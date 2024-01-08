@@ -2,24 +2,13 @@
 
 ### A code generation experiment.
 
-# Rationale
-
-A lot of the software development grind can be automated away, but the cost of implementing it during the development
-process usually requires incurring a cost. What if a project was started with the mindset that all of it needed to be
-generated from a script? With that sort of frame of reference, it heavily follows that it'd make the most sense to use
-generators and other sources to minimize the amount of logic needed to be added into the script itself. With this
-direction established, I did some research into how one might go about generating a large fraction of a web application
-code base, and after about an hour worth of googling, I settled on PHP, symfony with the makerBundle's make commands
-for backend code generation and angular's ng CLI for frontend code generation. The idea is to generate as much of the
-skeleton code as I can and then use chatGPT3.5 to fill in the gaps and implement the needed business logic.
-
 # Rules
 
 Below are the guidelines for this project.
 
 | #  | Rule description                                                     |
 |----|----------------------------------------------------------------------|
-| 1. | All code must be generated via script or ChatGPT3.5.                 |
+| 1. | All code must be generated via a generator script or ChatGPT3.5.     |
 | 2. | All usages of ChatGPT3.5 must be completed in a single prompt.       |
 | 3. | All code modifications must be performed via execution of a command. |
 
@@ -27,7 +16,11 @@ Below are the guidelines for this project.
 
 You're not allowed to directly program anything. You have to use generators and an AI assistant to generate the code for
 you. You're allowed to create wild invocations of generator commands and selectively pull code from AI assistant
-generated code, but you simply cannot write invocations like `sed -i '5i    logic();\n    moreLogic();\n' filename.php`.
+generated code, but you simply cannot write code via bash invocations like:
+
+```
+sed -i '5i    logic();\n    moreLogic();\n' filename.php
+```
 
 ## Rule number 2
 
@@ -47,6 +40,35 @@ response, and insert it where it's supposed to go.
 3. Use ChatGPT3.5 to fill in the gaps
 
 > Note: The resulting code needs to be extracted via share URL and inserted via script.
+
+# Technology Selection:
+
+| Software | Description | Docs |
+| -------- | ----------- | ---- |
+| Docker | Docker is an open platform for developing, shipping, and running applications. | https://docs.docker.com/ |
+| Symfony | Symfony is a set of PHP Components, a Web Application framework, a Philosophy, and a Community. |  https://symfony.com/doc/current/index.html |
+| Angular | The web development framework for building the future. | https://angular.io/docs |
+| ChatGPT3.5 | ChatGPT is a free-to-use AI system developed by OpenAI. | https://chat.openai.com/ |
+
+> # Docker
+> - A container virtualization software.
+> - Easily share and spin up environments for code to be executed within.
+>
+> # Symfony
+> - A PHP backend framework.
+> - MakerBundle generators.
+>
+> # Angular
+> - A javascript frontend framework.
+> - Schematic generators.
+>
+> # ChatGPT3.5
+> - A language model. 
+> - Picked due to its ability to share URLs to conversations.
+
+# Package: "conjure-commands"
+
+I made a sibling project, "conjure-commands" for this challenge which can be installed into the generated symfony project. It will add additional commands for generating or adding AI generated code.
 
 # Quickstart
 
