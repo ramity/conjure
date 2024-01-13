@@ -1,6 +1,10 @@
-# _CONJURE_
+<h1 align="center">
+  <i>CONJURE</i>
+</h1>
 
-### A code generation experiment.
+![drawing hands](https://i.imgur.com/LEsRp0V.jpg)
+
+> ### A code generation experiment.
 
 # Rules
 
