@@ -1,0 +1,4 @@
+[submodule "https://github.com/symfony/maker-bundle.git"]
+	url = src/maker-bundle-source
+[submodule "https://github.com/ramity/conjure-commands.git"]
+	url = src/conjure-commands
