@@ -1,33 +1,9 @@
 #!/bin/bash
 
-DIR=/root/symfony
+# Write entity definitions for storing computed values to prevent recomputing.
 
-cd $DIR || exit
-
-# Ensure DIR is owned by root to avoid dubious ownership error
-chown -R root:root $DIR
-
-# Clear symfony directory
-rm ${DIR:?}/* -r -d
-rm $DIR/.*
-
-# Create symfony project
-symfony new conjure --webapp --dir=$DIR
-
-# Cleanup post generation
-touch $DIR/.gitkeep
-rm $DIR/.git -r -d
-
-# Add conjure commands repo
-composer config repositories.ramity/conjure-commands path /root/conjure-commands
-composer require --dev ramity/conjure-commands:dev-main@dev
-
-# Replace remote with local maker-bundle repo
-composer config repositories.symfony/maker-bundle path /root/maker-bundle
-composer require --dev symfony/maker-bundle:dev-main@dev
-
-# Update deps
-composer update
+SYMFONY_SOURCE_DIR="/root/symfony"
+cd $SYMFONY_SOURCE_DIR
 
 # Drop database if exists and create fresh
 bin/console d:d:d --if-exists --force
@@ -35,9 +11,11 @@ bin/console d:d:c
 
 # User entity
 bin/console conjure:wrapper make:user User yes uuid yes
+bin/console conjure:wrapper make:entity User email string 255 no ""
 
 # Unit entity
-bin/console conjure:wrapper make:entity Unit no name string 255 no ""
+bin/console conjure:wrapper make:entity Unit no ""
+bin/console conjure:wrapper make:entity Unit name string 255 no ""
 bin/console conjure:wrapper make:entity Unit abbreviation string 255 no ""
 
 # Nutrition entity
@@ -127,7 +105,7 @@ bin/console conjure:wrapper make:entity Nutrition seleniumUnit ManyToOne Unit ye
 bin/console conjure:wrapper make:entity Ingredient no ""
 bin/console conjure:wrapper make:entity Ingredient name string 255 no ""
 bin/console conjure:wrapper make:entity Ingredient brand string 255 yes ""
-bin/console conjure:wrapper make:entity Ingredient Nutrition ManyToOne Nutrition yes no ""
+bin/console conjure:wrapper make:entity Ingredient nutrition ManyToOne Nutrition yes no ""
 
 # IngredientSubstitution entity
 bin/console conjure:wrapper make:entity IngredientSubstitution no ""
@@ -165,18 +143,21 @@ bin/console conjure:wrapper make:entity MealInstance meal ManyToMany Meal no no 
 # FridgeTransaction entity
 bin/console conjure:wrapper make:entity FridgeTransaction no ""
 bin/console conjure:wrapper make:entity FridgeTransaction ingredient ManyToOne Ingredient yes no ""
-bin/console conjure:wrapper make:entity FridgeTransaction quantity float yes ""
-bin/console conjure:wrapper make:entity FridgeTransaction createdAt ManyToMany Ingredient no no ""
+bin/console conjure:wrapper make:entity FridgeTransaction quantity float no ""
+bin/console conjure:wrapper make:entity FridgeTransaction createdAt datetime no ""
 
 # GroceryTrip entity
 bin/console conjure:wrapper make:entity GroceryTrip no ""
 bin/console conjure:wrapper make:entity GroceryTrip ingredients ManyToMany Ingredient no no ""
+bin/console conjure:wrapper make:entity GroceryTrip ingredientInputs ManyToMany FridgeTransaction no yes groceryTripIngredientInputs ""
 
 # Fridge entity
 bin/console conjure:wrapper make:entity Fridge no ""
+bin/console conjure:wrapper make:entity Fridge user ManyToOne User no no ""
 bin/console conjure:wrapper make:entity Fridge ingredientInputs ManyToMany FridgeTransaction no yes fridgeIngredientInputs ""
 bin/console conjure:wrapper make:entity Fridge ingredientOutputs ManyToMany FridgeTransaction no yes fridgeIngredientOutputs ""
 
 # Validate entity definitions
-bin/console d:s:v
+bin/console d:s:v --skip-sync
 bin/console d:s:u --force --complete
+bin/console d:s:v
