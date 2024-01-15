@@ -13,8 +13,8 @@ fi
 # Check if backup exists
 if [ -d "$SYMFONY_BACKUP_DIR" ]; then
     # Copy from backup
-    cp -r $SYMFONY_BACKUP_DIR/* $SYMFONY_SOURCE_DIR
-    cp -r $SYMFONY_BACKUP_DIR/.* $SYMFONY_SOURCE_DIR
+    cp -r -p $SYMFONY_BACKUP_DIR/* $SYMFONY_SOURCE_DIR
+    cp -r -p $SYMFONY_BACKUP_DIR/.* $SYMFONY_SOURCE_DIR
     echo "Restored base symfony application from backup."
     exit 0
 fi
@@ -53,6 +53,6 @@ echo "Generated base symfony application."
 # Backup source directory
 echo "Backing up base symfony application for future executions..."
 mkdir $SYMFONY_BACKUP_DIR
-cp -r $SYMFONY_SOURCE_DIR/* $SYMFONY_BACKUP_DIR
-cp -r $SYMFONY_SOURCE_DIR/.* $SYMFONY_BACKUP_DIR
+cp -r -p $SYMFONY_SOURCE_DIR/* $SYMFONY_BACKUP_DIR
+cp -r -p $SYMFONY_SOURCE_DIR/.* $SYMFONY_BACKUP_DIR
 echo "Completed."
